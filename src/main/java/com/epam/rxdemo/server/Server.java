@@ -1,7 +1,6 @@
 package com.epam.rxdemo.server;
 
 import io.vertx.core.VertxOptions;
-import io.vertx.ext.web.handler.sockjs.BridgeEventType;
 import io.vertx.ext.web.handler.sockjs.BridgeOptions;
 import io.vertx.ext.web.handler.sockjs.PermittedOptions;
 import io.vertx.rxjava.core.AbstractVerticle;
