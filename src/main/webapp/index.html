@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Hello CommonJS!</title>
+</head>
+<body>
+<div id="log"></div>
+
+<script src="components/sockjs/sockjs.min.js"></script>
+<script src="components/vertx3-eventbus-client/vertx-eventbus.js"></script>
+<script>
+    var eb = new EventBus('/eventbus/');
+    eb.onopen = function () {
+        eb.registerHandler('feed', function (err, msg) {
+            console.log(msg);
+        });
+    };
+</script>
+</body>
+</html>

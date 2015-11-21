@@ -1,0 +1,21 @@
+{
+  "name": "rxdemo",
+  "description": "",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "angularjs#~1.4.8",
+    "vertx3-eventbus-client": "3.1.0",
+    "sockjs": "~0.3.4"
+  }
+}
