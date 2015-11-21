@@ -11,6 +11,8 @@ import io.vertx.rxjava.ext.web.handler.StaticHandler;
 import io.vertx.rxjava.ext.web.handler.sockjs.SockJSHandler;
 import rx.plugins.RxJavaPlugins;
 
+import java.util.Random;
+
 import static io.vertx.rxjava.core.RxHelper.schedulerHook;
 
 /**
@@ -31,20 +33,21 @@ public class Server extends AbstractVerticle {
     public void start() {
         Router router = Router.router(vertx);
 
+        // eventbus client bridge
         BridgeOptions bridgeOptions = new BridgeOptions()
                 .addOutboundPermitted(new PermittedOptions().setAddress("feed"));
         router.route("/eventbus/*").handler(SockJSHandler.create(vertx).bridge(bridgeOptions, event -> {
-            if (event.type() == BridgeEventType.SOCKET_CREATED) {
-                System.out.println("A socket was created");
-            }
+            System.out.println(event.type());
             event.complete(true);
         }));
-        router.route().handler(StaticHandler.create().setWebRoot("src/main/webapp"));
+        // static file server
+        router.route().handler(StaticHandler.create().setWebRoot("src/main/webapp").setCachingEnabled(false));
 
         vertx.createHttpServer().requestHandler(router::accept).listen(8080);
 
         System.out.println("Server is started");
 
-        vertx.setPeriodic(1000, t -> vertx.eventBus().publish("feed", "news from the server!"));
+        Random rng = new Random();
+        vertx.setPeriodic(100, t -> vertx.eventBus().publish("feed", rng.nextInt(100)));
     }
 }
