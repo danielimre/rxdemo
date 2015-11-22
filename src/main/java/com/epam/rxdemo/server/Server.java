@@ -8,14 +8,16 @@ import io.vertx.rxjava.core.Vertx;
 import io.vertx.rxjava.ext.web.Router;
 import io.vertx.rxjava.ext.web.handler.StaticHandler;
 import io.vertx.rxjava.ext.web.handler.sockjs.SockJSHandler;
+import rx.Observable;
 import rx.plugins.RxJavaPlugins;
 
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 import static io.vertx.rxjava.core.RxHelper.schedulerHook;
 
 /**
- * Simple Vert.x file server.
+ * Simple Vert.x file server with bridged event bus.
  *
  * @author Daniel Imre
  */
@@ -42,11 +44,12 @@ public class Server extends AbstractVerticle {
         // static file server
         router.route().handler(StaticHandler.create().setWebRoot("src/main/webapp").setCachingEnabled(false));
 
-        vertx.createHttpServer().requestHandler(router::accept).listen(8080);
-
-        System.out.println("Server is started");
+        int port = 8080;
+        vertx.createHttpServer().requestHandler(router::accept).listen(port);
+        System.out.println("Server is started on port " + port);
 
         Random rng = new Random();
-        vertx.setPeriodic(100, t -> vertx.eventBus().publish("feed", rng.nextInt(100)));
+        Observable<Integer> source = Observable.interval(100, TimeUnit.MILLISECONDS).map(x -> rng.nextInt(100));
+        source.subscribe(i -> vertx.eventBus().publish("feed", i));
     }
 }

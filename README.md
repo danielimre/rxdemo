@@ -9,3 +9,5 @@ Start up
 `bower install`
 
 Start `com.epam.rxdemo.server.Server` from some IDE.
+
+Check `localhost:8080`
