@@ -1,4 +1,5 @@
 'use strict';
+var failMe = false;
 let feedObservable = (function () {
     const obs = Rx.Observable.create(observer => {
             var eb = new EventBus('/eventbus/');
@@ -22,9 +23,15 @@ let feedObservable = (function () {
     return () => obs;
 })();
 
-let msgs = feedObservable();
-let evens = msgs.filter(x => x % 2 === 0);
-let odds = msgs.filter(x => x % 2 === 1);
+let msgs = feedObservable().map(x => {
+    if (failMe) {
+        failMe = false;
+        throw new Error("Aaaarghh");
+    }
+    return x;
+});
+let evens = msgs.filter(x => x % 2 === 0).onErrorResumeNext(Rx.Observable.just(-1));
+let odds = msgs.filter(x => x % 2 === 1).retry();
 
 let allSubscription;
 let evenSubscription;
@@ -54,8 +61,6 @@ $('#subscribeall').click(() => {
     if (!allSubscription) {
         allSubscription = msgs.subscribe(appendToObserver($('#all')));
     }
-    $('#subscribeeven').click();
-    $('#subscribeodd').click();
 });
 $('#subscribeeven').click(() => {
     if (!evenSubscription) {
@@ -72,8 +77,6 @@ $('#unsubscribeall').click(() => {
         allSubscription.dispose();
         allSubscription = null;
     }
-    $('#unsubscribeeven').click();
-    $('#unsubscribeodd').click();
 });
 $('#unsubscribeeven').click(() => {
     if (evenSubscription) {
@@ -87,3 +90,5 @@ $('#unsubscribeodd').click(() => {
         oddSubscription = null;
     }
 });
+
+$('#failure').click(() => failMe = !failMe);
