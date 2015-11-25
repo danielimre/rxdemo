@@ -33,7 +33,10 @@ let $log = $('#log');
 
 function appendToObserver($node) {
     return {
-        onNext: x => $node.append('<span class="badge badge-info">' + x + '</span>'),
+        onNext: x => {
+            let c = x % 2 ? 'salmon' : 'cornflowerblue';
+            $node.append('<span class="badge" style="background-color: ' + c + '">' + x + '</span>')
+        },
         onError: error,
         onComplete: () => log('stream finished')
     };
