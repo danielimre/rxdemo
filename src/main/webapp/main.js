@@ -29,7 +29,7 @@ let msgs = feedObservable().map(x => {
         throw new Error("Aaaarghh");
     }
     return x;
-});
+}).doOnError(e => error(e));
 let evens = msgs.filter(x => x % 2 === 0).onErrorResumeNext(Rx.Observable.just(-1));
 let odds = msgs.filter(x => x % 2 === 1).retry();
 
