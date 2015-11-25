@@ -4,7 +4,7 @@ let feedObservable = (function () {
             var eb = new EventBus('/eventbus/');
             log('eventbus created');
             eb.onopen = () => {
-               log('connection opened');
+                log('connection opened');
                 eb.registerHandler('feed', function (err, msg) {
                     if (err) {
                         observer.onError(err);
@@ -50,23 +50,40 @@ function error(msg) {
     $log.append('<div class="text-danger">' + msg + '</div>');
 }
 
-$('#subscribe').click(() => {
+$('#subscribeall').click(() => {
     if (!allSubscription) {
         allSubscription = msgs.subscribe(appendToObserver($('#all')));
     }
+    $('#subscribeeven').click();
+    $('#subscribeodd').click();
+});
+$('#subscribeeven').click(() => {
     if (!evenSubscription) {
         evenSubscription = evens.subscribe(appendToObserver($('#even')))
     }
+});
+$('#subscribeodd').click(() => {
     if (!oddSubscription) {
         oddSubscription = odds.subscribe(appendToObserver($('#odd')));
     }
 });
-
-$('#unsubscribe').click(() => {
-    allSubscription.dispose();
-    allSubscription = null;
-    evenSubscription.dispose();
-    evenSubscription = null;
-    oddSubscription.dispose();
-    oddSubscription = null;
+$('#unsubscribeall').click(() => {
+    if (allSubscription) {
+        allSubscription.dispose();
+        allSubscription = null;
+    }
+    $('#unsubscribeeven').click();
+    $('#unsubscribeodd').click();
+});
+$('#unsubscribeeven').click(() => {
+    if (evenSubscription) {
+        evenSubscription.dispose();
+        evenSubscription = null;
+    }
+});
+$('#unsubscribeodd').click(() => {
+    if (oddSubscription) {
+        oddSubscription.dispose();
+        oddSubscription = null;
+    }
 });

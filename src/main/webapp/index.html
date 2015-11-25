@@ -8,18 +8,33 @@
 <body>
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-12">
-            <button class="button" id="subscribe">subscribe</button>
-            <button class="button" id="unsubscribe">unsubscribe</button>
+        <div id="all" class="col-md-4">
+            <h1>All</h1>
+
+            <div class="input-group">
+                <button class="btn btn-success" id="subscribeall">subscribe</button>
+                <button class="btn btn-danger" id="unsubscribeall">unsubscribe</button>
+            </div>
+        </div>
+        <div id="even" class="col-md-4">
+            <h1>Even</h1>
+
+            <div class="input-group">
+                <button class="btn btn-success" id="subscribeeven">subscribe</button>
+                <button class="btn btn-danger" id="unsubscribeeven">unsubscribe</button>
+            </div>
+        </div>
+        <div id="odd" class="col-md-4">
+            <h1>Odd</h1>
+
+            <div class="input-group">
+                <button class="btn btn-success" id="subscribeodd">subscribe</button>
+                <button class="btn btn-danger" id="unsubscribeodd">unsubscribe</button>
+            </div>
         </div>
     </div>
     <div class="row">
-        <div id="all" class="col-md-4"><h1>All</h1></div>
-        <div id="even" class="col-md-4"><h1>Even</h1></div>
-        <div id="odd" class="col-md-4"><h1>Odd</h1></div>
-    </div>
-    <div class="row">
-        <div id="log" class="col-md-12"></div>
+        <div id="log" class="col-md-12 well"></div>
     </div>
 </div>
 
