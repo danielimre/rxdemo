@@ -19,7 +19,7 @@ let feedObservable = (function () {
                 log('connection closed');
             }
         }
-    ).publish().refCount();
+    ).publish().refCount().timeout(2000, () => {throw new Error("Timeout")});
     return () => obs;
 })();
 
